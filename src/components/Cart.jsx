@@ -1,19 +1,20 @@
 import {BsBoxArrowRight} from 'react-icons/bs'
-import { useStateContext } from '../context/stateContext'
 import {FiDelete} from 'react-icons/fi'
 import {AiOutlineShopping} from 'react-icons/ai'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { remove, changeQty } from '../feature/cartSlice'
 
-const Cart = ({setCart}) => {
-  const {state: {cart}, dispatch, cartItem, setCartItem} = useStateContext();
+const Cart = ({setCart, cartItems}) => {
   const [total, setTotal] = useState(0);
+  const dispatch = useDispatch()
 
   useEffect(()=>{
     setTotal(
-      cart.reduce((acc, curr)=> acc + Number(curr.price)*curr.qty, 0)
+      cartItems.reduce((acc, curr)=> acc + Number(curr.price)*curr.qty, 0)
     )
-  }, [cart])
+  }, [cartItems])
 
   return (
     <div className='cart'>
@@ -21,19 +22,15 @@ const Cart = ({setCart}) => {
         <span className='icon'>
           <BsBoxArrowRight onClick={()=>setCart(false)}/>
         </span>
-        <span>Cart Items ({cartItem})</span>
+        <span>Cart Items ({cartItems.length})</span>
       </div>
-      {cart.length >= 1 ?
+      {cartItems.length >= 1 ?
         <><div className="cartItems">
-        {cart?.map(c=>{
+        {cartItems?.map(c=>{
           return(
             <div className="cartItem" key={c.id}>
-              <FiDelete onClick={()=>{
-                dispatch({type: "REMOVE_FROM_CART", payload: c}) 
-                setCartItem(prev=>prev-1)
-              }
-              } className="icon" />
-              <img src={c.thumbnail} alt="" />
+              <FiDelete className="icon" onClick={()=>dispatch(remove(c.id)) } />
+              <img src={c.img} alt="" />
               <div className='info'>
                 <h4 className='title'>{c.title}</h4>
                 <h6 className='brand'>Brand: {c.brand}</h6>
@@ -41,19 +38,9 @@ const Cart = ({setCart}) => {
               <div>
                 <span className='price'>$ {c.price}</span>
                 <div className='qty'>
-                  <button onClick={()=>{
-                    dispatch({
-                      type: "CHANGE_QTY",
-                      payload: {id: c.id, qty: c.qty - 1},
-                    })
-                  }}>-</button>
+                  <button style={{pointerEvents: c.qty < 2 && 'none'}} onClick={()=>dispatch(changeQty({id: c.id, qty: c.qty-1}))}>-</button>
                   <span>{c.qty}</span>
-                  <button onClick={()=>{
-                    dispatch({
-                      type: "CHANGE_QTY",
-                      payload: {id: c.id, qty: c.qty + 1},
-                    })
-                  }}>+</button>
+                  <button onClick={()=>dispatch(changeQty({id: c.id, qty: c.qty+1}))}>+</button>
                 </div>
               </div>
             </div>

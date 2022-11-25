@@ -1,26 +1,25 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {AiOutlineShopping} from 'react-icons/ai'
+import { useSelector } from 'react-redux';
 import Cart from './Cart';
-import { useStateContext } from '../context/stateContext';
 
 const Navbar = () => {
   const [carts, setCart] = useState(false);
-  const {cartItem, state} = useStateContext();
-  const {cart} = state;
+  const items = useSelector(state=>state.cart);
 
   return (
     <div className='navbar'>
       <div className="wrapper">
         <div className="logo">
-          <Link to="/" style={{textDecoration: "none", fontSize: "30px"}}>LamaShop</Link>
+          <Link to="/" style={{textDecoration: "none", fontSize: "30px"}}>Shopee</Link>
         </div>
         <div className='icons'>
-          {cartItem >= 1 && <span className='badge'>{cartItem}</span>}
+          {items.length >= 1 && <span className='badge'>{items.length}</span>}
           <AiOutlineShopping className='icon' onClick={()=>setCart(true)}/>
         </div>
       </div>
-      {carts && <Cart setCart={setCart} cart={cart} />}
+      {carts && <Cart cartItems={items} setCart={setCart} />}
     </div>
   )
 }

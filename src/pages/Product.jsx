@@ -1,27 +1,39 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Card from "../components/Card"
-import { useStateContext } from '../context/stateContext'
+import Footer from "../components/Footer";
+import { fetchProduct } from "../feature/productSlice";
 
 const Product = () => {
-  const {state: {products}, loading} = useStateContext();
+  const dispatch = useDispatch()
+  const { data: { products }, status } = useSelector(state => state.product)
+
+  useEffect(() => {
+    dispatch(fetchProduct());
+  }, [])
+
+  if (status === "loading") {
+    return <h1>Product Loading please wait... </h1>
+  }
 
   return (
     <div className='product'>
       <div className='banner'>
-        <img src="https://t4.ftcdn.net/jpg/02/24/88/07/360_F_224880717_YmNbocwrjak9AyvQ9QrTnELWCeOGtKvH.jpg" alt="" />
+        <img src="https://disruptmagazine.com/wp-content/uploads/2021/03/7-ecommerce-content-marketing-examples-for-2019.png" alt="" />
       </div>
-      <h1>You may like this</h1>
-      {loading ? (
-        <div>Product Loading please wait...</div>
-      ) : (
-        <div className="wrapper">
-          {products?.map(item=>{
+      <h1>Our Products</h1>
+      <div className="wrapper">
+        {products?.map(item => {
           return (
-            <Card product={item} key= {item.id}/>
+            <Card product={item} key={item.id} />
           )
         })
-      }
+        }
       </div>
-      )}
+
+      <footer>
+        <Footer />
+      </footer>
     </div>
   )
 }

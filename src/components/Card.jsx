@@ -1,30 +1,25 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { useStateContext } from '../context/stateContext'
+import { add, remove } from '../feature/cartSlice';
+
 
 const Card = ({product}) => {
-  const {state: {cart}, dispatch, setCartItem} = useStateContext();
+  const dispatch = useDispatch();
+  const cartItems = useSelector(state=>state.cart);
 
   const addProduct = ()=>{
-    setCartItem(prev=>prev+1);
-    dispatch({
-      type: "ADD_TO_CART",
-      payload: {
-        id: product.id,
-        thumbnail: product.thumbnail,
-        qty: 1,
-        price: product.price,
-        title: product.title,
-        brand: product.brand
-      }
-    })
+    dispatch(add({
+      id: product.id,
+      img: product.thumbnail,
+      price: product.price,
+      qty: 1,
+      title: product.title,
+      brand: product.brand
+    }))
   }
-
+  
   const removeProduct = ()=>{
-    setCartItem(prev=>prev-1);
-    dispatch({
-      type: "REMOVE_FROM_CART", 
-      payload: product
-    })
+    dispatch(remove(product.id))
   }
 
   return (
@@ -37,10 +32,14 @@ const Card = ({product}) => {
           <span className='title'>{product.title}</span>
           <span className='price'>$ {product.price}</span>
         </div>
-        <div>
-          {cart.some(p=>p.id === product.id)
-            ?<button onClick={removeProduct} className="removeBtn">Remove from Cart</button>
-            :<button onClick={addProduct} className="addBtn">Add to Cart</button>
+        <div className='bottom'>
+          <div className='left'>
+            <span className='brand'>Brand: {product.brand}</span> <br />
+            <span className='category'>Ctg: {product.category}</span>
+          </div>
+          {cartItems.some(p=>p.id === product.id)
+            ?<button onClick={removeProduct} className="removeBtn">Remove</button>
+            :<button onClick={addProduct} className="addBtn">Add to cart</button>
           }
         </div>
       </div>

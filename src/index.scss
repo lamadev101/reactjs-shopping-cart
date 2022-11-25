@@ -5,7 +5,7 @@ body{
   margin: 0;
   padding: 0;
   font-family: 'Prompt', sans-serif;
-
+  background: #f1f5f8;
 }
 ::-webkit-scrollbar{
   display: none;
@@ -15,19 +15,18 @@ body{
 }
 
 button{
-  height: 40px;
+  height: 30px;
   background: none;
-  margin-top: 1rem;
-  border-radius: 1rem;
+  border: none;
+  border-radius: .5rem;
   cursor: pointer;
   text-transform: uppercase;
-  border: none;
 }
 .addBtn{
-  border: 1px solid #1010bd;
-  color: #1010bd;
+  border: 1px solid #0b71ca;
+  color: #0b71ca;
   &:hover{
-    background: #1010bd;
+    background: #0b71ca;
     color: white;
   }
 }
@@ -81,7 +80,9 @@ button{
     padding: 0;
     width: 100%;
     img{
+      height: 70vh;
       width: 100%;
+      object-fit: cover;
     }
   }
   h1{
@@ -93,20 +94,20 @@ button{
   }
   .wrapper{
     padding: 1rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 1rem;
   }
 }
 
 .card{
   width: 290px;
   height: 350px;
-  box-shadow: 0 0 5px lightgray;
+  box-shadow: 0 0 5px #d3d3d35b;
   padding: 1rem;
   border-radius: 5px;
+  margin-bottom: 2rem;
+  background: White;
 
   img{
     width: 100%;
@@ -124,10 +125,38 @@ button{
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 80%;
+        color: #333;
+        font-size: 18px;
+      }
+      .price{
+        color: rgb(255, 255, 255);
+        background: rgba(6, 140, 181, 0.768);
+        border-radius: 10px;
+        padding: 2px 5px;
       }
     }
-    button{
-      width: 100%;
+    .bottom{
+      display: flex;
+      align-items: center;
+      margin-top: .5rem;
+
+      .left{
+        flex: 1.5;
+        font-size: 12px;
+        .brand{
+          color: green;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .category{
+          color: orangered;
+        }
+      }
+      button{
+        flex: 1;
+        width: 50%;
+      }
     }
     
   }
@@ -177,6 +206,12 @@ button{
       flex: 2;
       display: flex;
       flex-direction: column;
+      h3{
+        margin: 0;
+        background: rgba(29, 187, 235, 0.499);
+        max-width: max-content;
+        padding: 2px 5px;
+      }
       p{
         color: rgb(121, 118, 118);
       }
@@ -198,12 +233,32 @@ button{
   }
 }
 
+.similarPorduct{
+  width: 100%;
+  background: rgba(211, 211, 211, 0.18);
+  padding: 1rem;
+  .productImg{
+    width: 200px;
+    height: 200px;
+    margin: 1rem;
+    
+    img{
+      border-radius: 10px;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+  }
+}
+
 .cart{
   position: fixed;
   overflow-y: scroll;
   right: 0;
   top: 0;
-  z-index: 99;
+  z-index: 999;
   width: 400px;
   height: 100vh;
   box-shadow: 0 0 5px lightgray;
@@ -278,6 +333,7 @@ button{
           border-radius: 0px;
           height: 20px;
         }
+
         span{
           margin: 0 .3rem;
         }
@@ -321,7 +377,8 @@ button{
     button{
       background: rgba(15, 129, 223, 0.845);
       width: 60%;
-      margin-bottom: 1rem;
+      height: 50px;
+      margin: 1rem 0;
       border-radius: 0;
     }
   }
@@ -361,8 +418,19 @@ button{
   }
 }
 
+.footer{
+  background: rgb(235, 235, 235);
+  height: 100px;
+  padding: 2rem 0;
+  margin-top: 2rem;
+  p{
+    text-align: center;
+  }
+}
+
+
+
 @media (max-width: 477px){
-  
   .product{
     .banner{
       width: 100%;
@@ -371,6 +439,9 @@ button{
         height: 50vh;
         object-fit: cover;
       }
+    }
+    .wrapper{
+      grid-template-columns: 1fr;
     }
   }
   .productDetails{
